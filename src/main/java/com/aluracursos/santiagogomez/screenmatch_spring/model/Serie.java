@@ -2,6 +2,7 @@ package com.aluracursos.santiagogomez.screenmatch_spring.model;
 
 import jakarta.persistence.*;
 
+import java.util.List;
 import java.util.OptionalDouble;
 
 @Entity //Esto va a ser una entidad de la base de datos
@@ -19,6 +20,8 @@ public class Serie {
     private String sinopsis;
     private String poster;
     private String casting;
+    @Transient //
+    private List<Episodio> episodios; //le estás diciendo a JPA que no se preocupe por guardar ese atributo en la tabla correspondiente.
 
     public Serie(DatosSerie datosSerie) {
         this.titulo = datosSerie.titulo();

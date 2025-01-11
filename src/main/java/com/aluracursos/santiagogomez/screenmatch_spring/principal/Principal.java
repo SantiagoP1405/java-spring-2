@@ -1,6 +1,7 @@
 package com.aluracursos.santiagogomez.screenmatch_spring.principal;
 
 import com.aluracursos.santiagogomez.screenmatch_spring.model.*;
+import com.aluracursos.santiagogomez.screenmatch_spring.respository.SerieRepository;
 import com.aluracursos.santiagogomez.screenmatch_spring.service.ConsumoAPI;
 import com.aluracursos.santiagogomez.screenmatch_spring.service.ConvierteDatos;
 
@@ -16,6 +17,11 @@ public class Principal {
     private final String apiKey = "&apikey=98314eb2";
     private ConvierteDatos convierteDatos = new ConvierteDatos();
     private List<DatosSerie> datosSeries = new ArrayList<>();
+    private SerieRepository repository;
+    public Principal(SerieRepository repository) {
+        this.repository = repository;
+    }
+
     public void muestraMenu(){
         var opcion = -1;
         while (opcion != 0) {
@@ -71,7 +77,9 @@ public class Principal {
     }
     private void buscarSerieWeb() {
         DatosSerie datos = getDatosSerie();
-        datosSeries.add(datos);
+        Serie serie = new Serie(datos);
+        repository.save(serie);
+        //datosSeries.add(datos);
         System.out.println(datos);
     }
     private void mostrarSeriesBuscadas() {
