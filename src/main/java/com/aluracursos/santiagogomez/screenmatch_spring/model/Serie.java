@@ -23,6 +23,10 @@ public class Serie {
     @Transient //
     private List<Episodio> episodios; //le estás diciendo a JPA que no se preocupe por guardar ese atributo en la tabla correspondiente.
 
+    public Serie(){
+
+    }
+
     public Serie(DatosSerie datosSerie) {
         this.titulo = datosSerie.titulo();
         this.totalTemporadas = datosSerie.totalTemporadas();

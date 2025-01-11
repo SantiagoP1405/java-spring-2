@@ -4,17 +4,23 @@ import com.aluracursos.santiagogomez.screenmatch_spring.model.*;
 import com.aluracursos.santiagogomez.screenmatch_spring.respository.SerieRepository;
 import com.aluracursos.santiagogomez.screenmatch_spring.service.ConsumoAPI;
 import com.aluracursos.santiagogomez.screenmatch_spring.service.ConvierteDatos;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
 
+@Component
 public class Principal {
     private Scanner input = new Scanner(System.in);
     private ConsumoAPI consumoApi = new ConsumoAPI();
     private final String url = "https://www.omdbapi.com/?t=";
-    private final String apiKey = "&apikey=98314eb2";
+    //@Value("${API_KEY_OMDB}")
+    //private String apiKey; //&apikey=98314eb2
+    //private final String apiKey = "&apikey=98314eb2"; //&apikey=98314eb2
+    private String apiKey = System.getenv("API_KEY_OMDB");
     private ConvierteDatos convierteDatos = new ConvierteDatos();
     private List<DatosSerie> datosSeries = new ArrayList<>();
     private SerieRepository repository;
@@ -83,10 +89,8 @@ public class Principal {
         System.out.println(datos);
     }
     private void mostrarSeriesBuscadas() {
-        List<Serie> series = new ArrayList<>();
-        series = datosSeries.stream()
-                .map(d -> new Serie(d))
-                .collect(Collectors.toList());
+        List<Serie> series = repository.findAll();
+
         series.stream()
                 .sorted(Comparator.comparing(Serie::getGenero))
                 .forEach(System.out::println);
