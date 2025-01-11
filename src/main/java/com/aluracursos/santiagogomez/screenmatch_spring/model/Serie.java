@@ -1,19 +1,24 @@
 package com.aluracursos.santiagogomez.screenmatch_spring.model;
 
-import com.aluracursos.santiagogomez.screenmatch_spring.service.ConsultaChatGPT;
-import com.fasterxml.jackson.annotation.JsonAlias;
+import jakarta.persistence.*;
 
 import java.util.OptionalDouble;
 
-
+@Entity //Esto va a ser una entidad de la base de datos
+@Table(name = "series")
 public class Serie {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY) //Para que se genere automáticamente y se genere un número autoiincremental
+    private Long id;
+    @Column(unique = true)
     private String titulo; //json alias asís e llama en el json de la api. Al mapearlo en la aplicaicón se convierte en título
     private Integer totalTemporadas;
     private Double evaluacion;
+    @Enumerated(EnumType.STRING) //Se indica el tipo de enum
     private Categoria genero; //permite definir un conjunto de constantes relacionadas. ayuda a evitar errores
     private String sinopsis;
     private String poster;
-    private String cast;
+    private String casting;
 
     public Serie(DatosSerie datosSerie) {
         this.titulo = datosSerie.titulo();
@@ -21,9 +26,17 @@ public class Serie {
         this.evaluacion = OptionalDouble.of(Double.valueOf(datosSerie.evaluacion())).orElse(0);
         this.genero = Categoria.fromString(datosSerie.genero().split(",")[0].trim()); //Cada que se encuentra una coma, se crea una lista y se toma la primera posición
         this.poster = datosSerie.poster();
-        this.cast = datosSerie.cast();
+        this.casting = datosSerie.cast();
         this.sinopsis = datosSerie.sinopsis();
         //this.sinopsis = ConsultaChatGPT.obtenerTraduccion(datosSerie.sinopsis());
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getTitulo() {
@@ -74,12 +87,12 @@ public class Serie {
         this.poster = poster;
     }
 
-    public String getCast() {
-        return cast;
+    public String getCasting() {
+        return casting;
     }
 
-    public void setCast(String cast) {
-        this.cast = cast;
+    public void setCasting(String casting) {
+        this.casting = casting;
     }
 
     @Override
@@ -91,6 +104,6 @@ public class Serie {
                 ", genero=" + genero +
                 ", sinopsis='" + sinopsis +
                 ", poster='" + poster +
-                ", cast='" + cast;
+                ", cast='" + casting;
     }
 }
