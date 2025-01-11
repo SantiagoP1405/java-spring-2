@@ -17,9 +17,6 @@ public class Principal {
     private Scanner input = new Scanner(System.in);
     private ConsumoAPI consumoApi = new ConsumoAPI();
     private final String url = "https://www.omdbapi.com/?t=";
-    //@Value("${API_KEY_OMDB}")
-    //private String apiKey; //&apikey=98314eb2
-    //private final String apiKey = "&apikey=98314eb2"; //&apikey=98314eb2
     private String apiKey = System.getenv("API_KEY_OMDB");
     private ConvierteDatos convierteDatos = new ConvierteDatos();
     private List<DatosSerie> datosSeries = new ArrayList<>();
