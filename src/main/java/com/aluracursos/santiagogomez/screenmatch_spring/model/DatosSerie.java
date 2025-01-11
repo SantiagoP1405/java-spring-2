@@ -7,5 +7,10 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 public record DatosSerie(
         @JsonAlias("Title") String titulo, //json alias asís e llama en el json de la api. Al mapearlo en la aplicaicón se convierte en título
         @JsonAlias("totalSeasons") Integer totalTemporadas,
-        @JsonAlias("imdbRating") String evaluacion) {
+        @JsonAlias("imdbRating") String evaluacion,
+        @JsonAlias("Genre") String genero,
+        @JsonAlias("Plot") String sinopsis,
+        @JsonAlias("Poster") String poster,
+        @JsonAlias("Actors") String cast
+) {
 }

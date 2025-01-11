@@ -1,9 +1,6 @@
 package com.aluracursos.santiagogomez.screenmatch_spring.principal;
 
-import com.aluracursos.santiagogomez.screenmatch_spring.model.DatosEpisodio;
-import com.aluracursos.santiagogomez.screenmatch_spring.model.DatosSerie;
-import com.aluracursos.santiagogomez.screenmatch_spring.model.DatosTemporadas;
-import com.aluracursos.santiagogomez.screenmatch_spring.model.Episodio;
+import com.aluracursos.santiagogomez.screenmatch_spring.model.*;
 import com.aluracursos.santiagogomez.screenmatch_spring.service.ConsumoAPI;
 import com.aluracursos.santiagogomez.screenmatch_spring.service.ConvierteDatos;
 
@@ -18,6 +15,7 @@ public class Principal {
     private final String url = "https://www.omdbapi.com/?t=";
     private final String apiKey = "&apikey=98314eb2";
     private ConvierteDatos convierteDatos = new ConvierteDatos();
+    private List<DatosSerie> datosSeries = new ArrayList<>();
     public void muestraMenu(){
         var opcion = -1;
         while (opcion != 0) {
@@ -39,7 +37,9 @@ public class Principal {
                 case 2:
                     buscarEpisodioPorSerie();
                     break;
-
+                case 3:
+                    mostrarSeriesBuscadas();
+                    break;
                 case 0:
                     System.out.println("Cerrando la aplicación...");
                     break;
@@ -71,8 +71,18 @@ public class Principal {
     }
     private void buscarSerieWeb() {
         DatosSerie datos = getDatosSerie();
+        datosSeries.add(datos);
         System.out.println(datos);
-
+    }
+    private void mostrarSeriesBuscadas() {
+        List<Serie> series = new ArrayList<>();
+        series = datosSeries.stream()
+                .map(d -> new Serie(d))
+                .collect(Collectors.toList());
+        series.stream()
+                .sorted(Comparator.comparing(Serie::getGenero))
+                .forEach(System.out::println);
+    }
         /*System.out.println("Escribe el nombre de la serie que deseas buscar");
         var nombreSerie = input.nextLine();
         //System.out.println(url + nombreSerie.replace(" ", "+") + apiKey);
@@ -88,15 +98,15 @@ public class Principal {
         }
         //temporadas.forEach(System.out::println);
 
-       /* for (int i = 0; i < datos.totalTemporadas(); ++i) {
+        for (int i = 0; i < datos.totalTemporadas(); ++i) {
             List<DatosEpisodio> episodiosTemporada = temporadas.get(i).episodios();
             for (int j = 0; j < episodiosTemporada.size(); ++j) {
                 System.out.println(episodiosTemporada.get(j).titulo());
             }
-        }*/
-        //temporadas.forEach(t -> t.episodios().forEach(e -> System.out.println(e.titulo()))); /*Usa un lambda para iterar sobre cada elemento. Para cada temporada t, se ejecuta el método episodios, y por cada episodio de cada temporada se imprime su título*/
+        }
+        //temporadas.forEach(t -> t.episodios().forEach(e -> System.out.println(e.titulo()))); /*Usa un lambda para iterar sobre cada elemento. Para cada temporada t, se ejecuta el método episodios, y por cada episodio de cada temporada se imprime su título
 
-        /*List<DatosEpisodio> datosEpisodios = temporadas.stream()
+        List<DatosEpisodio> datosEpisodios = temporadas.stream()
                 .flatMap(t -> t.episodios().stream()) //Se simplicifan los datos complejos de los episodios de una lista más manejable
                 .collect(Collectors.toList()); //recopila los elementos de un flujo (stream) y los convierte en una lista.
 
@@ -110,8 +120,8 @@ public class Principal {
                 .map(e->e.titulo().toUpperCase())
                 .peek(e -> System.out.println("Tercer filtro Mayúscula(m>M)" + e))
                 .forEach(System.out::println);
-        */
-        /*List<Episodio> episodios = temporadas.stream()
+
+        List<Episodio> episodios = temporadas.stream()
                 .flatMap(t -> t.episodios().stream()
                         .map(d -> new Episodio(t.numero(),d)))
                 .collect(Collectors.toList());
@@ -119,18 +129,18 @@ public class Principal {
 
         /*System.out.println("Indica el año a partir del cual deseas ver los episodios:");
         var fecha = input.nextInt();
-        input.nextLine();*/
+        input.nextLine();
 
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("dd/MM/YYYY");
         //LocalDate fechaBusqueda = LocalDate.of(fecha, 1, 1);
-        /*episodios.stream()
+        episodios.stream()
                 .filter(e -> e.getFechaLanzamiento() != null && e.getFechaLanzamiento().isAfter(fechaBusqueda))
                 .forEach(e-> System.out.println(
                         "Temporada" + e.getTemporada() +
                                 "Episodio " + e.getTitulo() +
                                 " Fecha de Lanzammiento " + e.getFechaLanzamiento().format(dtf)
-                ));*/
-        /*System.out.println("Escribe el pedazo del titulo que deseas ver");
+                ));
+        System.out.println("Escribe el pedazo del titulo que deseas ver");
         var pedazoTitulo = input.nextLine();
         Optional<Episodio> episodioBuscado = episodios.stream()
                 .filter(e -> e.getTitulo().toUpperCase().contains(pedazoTitulo.toUpperCase()))
@@ -141,8 +151,8 @@ public class Principal {
         }
         else{
             System.out.println("No encontrado");
-        }*/
-        /*Map<Integer, Double> evaluacionesPorTemporada = episodios.stream()
+        }
+        Map<Integer, Double> evaluacionesPorTemporada = episodios.stream()
                 .filter(e -> e.getEvaluacion() > 0.0)
                 .collect(Collectors.groupingBy(Episodio::getTemporada, Collectors.averagingDouble(Episodio::getEvaluacion)));
         System.out.println(evaluacionesPorTemporada);
@@ -152,5 +162,4 @@ public class Principal {
         System.out.println("Media: " + est.getAverage());
         System.out.println("Episodio mejor evaluado: " + est.getMax());
         System.out.println("Episodio peor evaluado: " + est.getMin());*/
-    }
 }
