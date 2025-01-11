@@ -4,11 +4,8 @@ import com.aluracursos.santiagogomez.screenmatch_spring.model.*;
 import com.aluracursos.santiagogomez.screenmatch_spring.respository.SerieRepository;
 import com.aluracursos.santiagogomez.screenmatch_spring.service.ConsumoAPI;
 import com.aluracursos.santiagogomez.screenmatch_spring.service.ConvierteDatos;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -35,6 +32,7 @@ public class Principal {
                     3 - Mostrar series buscadas
                     4 - Buscar Series por Título
                     5 - Buscar el Top 5
+                    6 - Buscar series por género
                                   
                     0 - Salir
                     """;
@@ -57,6 +55,9 @@ public class Principal {
                     break;
                 case 5:
                     buscarTop5();
+                    break;
+                case 6:
+                    bucarPorGenero();
                     break;
                 case 0:
                     System.out.println("Cerrando la aplicación...");
@@ -133,6 +134,15 @@ public class Principal {
     private void buscarTop5() {
         List<Serie> topSeries = repository.findTop5ByOrderByEvaluacionDesc();
         topSeries.forEach(s-> System.out.println("Serie: " + s.getTitulo() + ", Calificación: " + s.getEvaluacion()));
+    }
+
+    private void bucarPorGenero() {
+        System.out.println("Escriba el género/categoría de la serie que quiere buscar");
+        var genero = input.nextLine();
+        var categoria = Categoria.fromEspanol(genero);
+        List<Serie> seriesCategoria = repository.findByGenero(categoria);
+        System.out.println("Estas son las series del género " + genero + ": ");
+        seriesCategoria.forEach(System.out::println);
     }
 
         /*System.out.println("Escribe el nombre de la serie que deseas buscar");
