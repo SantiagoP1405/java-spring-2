@@ -1,16 +1,28 @@
 package com.aluracursos.santiagogomez.screenmatch_spring.model;
 
+import jakarta.persistence.*;
 import org.springframework.cglib.core.Local;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 
+@Entity
+@Table(name = "episodios")
 public class Episodio {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY) //Para que se genere automáticamente y se genere un número autoiincremental
+    private Long id;
     private Integer temporada;
     private String titulo;
     private Integer numeroEpisodio;
     private Double evaluacion;
     private LocalDate fechaLanzamiento;
+    @ManyToOne
+    private Serie serie;
+
+    public Episodio(){
+
+    }
 
     public Episodio(Integer numero, DatosEpisodio d) {
         this.temporada = numero;
@@ -68,6 +80,14 @@ public class Episodio {
 
     public void setFechaLanzamiento(LocalDate fechaLanzamiento) {
         this.fechaLanzamiento = fechaLanzamiento;
+    }
+
+    public Serie getSerie() {
+        return serie;
+    }
+
+    public void setSerie(Serie serie) {
+        this.serie = serie;
     }
 
     @Override

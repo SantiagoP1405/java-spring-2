@@ -20,8 +20,8 @@ public class Serie {
     private String sinopsis;
     private String poster;
     private String casting;
-    @Transient //
-    private List<Episodio> episodios; //le estás diciendo a JPA que no se preocupe por guardar ese atributo en la tabla correspondiente.
+    @OneToMany(mappedBy = "serie", cascade = CascadeType.ALL) //Relación de 1 a muchos
+    private List<Episodio> episodios;
 
     public Serie(){
 
@@ -100,6 +100,14 @@ public class Serie {
 
     public void setCasting(String casting) {
         this.casting = casting;
+    }
+
+    public List<Episodio> getEpisodios() {
+        return episodios;
+    }
+
+    public void setEpisodios(List<Episodio> episodios) {
+        this.episodios = episodios;
     }
 
     @Override
