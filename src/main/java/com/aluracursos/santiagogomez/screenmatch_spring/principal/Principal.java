@@ -33,6 +33,8 @@ public class Principal {
                     1 - Buscar series 
                     2 - Buscar episodios
                     3 - Mostrar series buscadas
+                    4 - Buscar Series por Título
+                    5 - Buscar el Top 5
                                   
                     0 - Salir
                     """;
@@ -49,6 +51,12 @@ public class Principal {
                     break;
                 case 3:
                     mostrarSeriesBuscadas();
+                    break;
+                case 4:
+                    buscarSeriesPorTitulo();
+                    break;
+                case 5:
+                    buscarTop5();
                     break;
                 case 0:
                     System.out.println("Cerrando la aplicación...");
@@ -109,6 +117,24 @@ public class Principal {
                 .sorted(Comparator.comparing(Serie::getGenero))
                 .forEach(System.out::println);
     }
+
+    private void buscarSeriesPorTitulo() {
+        System.out.println("Escribe el nombe de la serie que quieres buscar: ");
+        var nombresSerie = input.nextLine();
+        Optional<Serie> serieBuscada = repository.findByTituloContainsIgnoreCase(nombresSerie);
+        if (serieBuscada.isPresent()){
+            System.out.println("La serie es: " + serieBuscada.get());
+        }
+        else{
+            System.out.println("No encontrada");
+        }
+    }
+
+    private void buscarTop5() {
+        List<Serie> topSeries = repository.findTop5ByOrderByEvaluacionDesc();
+        topSeries.forEach(s-> System.out.println("Serie: " + s.getTitulo() + ", Calificación: " + s.getEvaluacion()));
+    }
+
         /*System.out.println("Escribe el nombre de la serie que deseas buscar");
         var nombreSerie = input.nextLine();
         //System.out.println(url + nombreSerie.replace(" ", "+") + apiKey);
