@@ -20,7 +20,7 @@ public class Serie {
     private String sinopsis;
     private String poster;
     private String casting;
-    @OneToMany(mappedBy = "serie", cascade = CascadeType.ALL) //Relación de 1 a muchos
+    @OneToMany(mappedBy = "serie", cascade = CascadeType.ALL, fetch = FetchType.EAGER) //Relación de 1 a muchos
     private List<Episodio> episodios;
 
     public Serie(){
@@ -107,6 +107,7 @@ public class Serie {
     }
 
     public void setEpisodios(List<Episodio> episodios) {
+        episodios.forEach(e -> e.setSerie(this));
         this.episodios = episodios;
     }
 
@@ -119,6 +120,6 @@ public class Serie {
                 ", genero=" + genero +
                 ", sinopsis='" + sinopsis +
                 ", poster='" + poster +
-                ", cast='" + casting;
+                ", cast='" + casting + ", episodios='" + episodios;
     }
 }
