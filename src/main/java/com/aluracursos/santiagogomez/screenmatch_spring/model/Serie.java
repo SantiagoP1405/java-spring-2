@@ -1,5 +1,6 @@
 package com.aluracursos.santiagogomez.screenmatch_spring.model;
 
+import com.aluracursos.santiagogomez.screenmatch_spring.service.ConsultaChatGPT;
 import com.fasterxml.jackson.annotation.JsonAlias;
 
 import java.util.OptionalDouble;
@@ -19,9 +20,10 @@ public class Serie {
         this.totalTemporadas = datosSerie.totalTemporadas();
         this.evaluacion = OptionalDouble.of(Double.valueOf(datosSerie.evaluacion())).orElse(0);
         this.genero = Categoria.fromString(datosSerie.genero().split(",")[0].trim()); //Cada que se encuentra una coma, se crea una lista y se toma la primera posición
-        this.sinopsis = datosSerie.sinopsis();
         this.poster = datosSerie.poster();
         this.cast = datosSerie.cast();
+        this.sinopsis = datosSerie.sinopsis();
+        //this.sinopsis = ConsultaChatGPT.obtenerTraduccion(datosSerie.sinopsis());
     }
 
     public String getTitulo() {
