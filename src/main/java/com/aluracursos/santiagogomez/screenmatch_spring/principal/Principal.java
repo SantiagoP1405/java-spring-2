@@ -156,7 +156,7 @@ public class Principal {
         System.out.println("¿Con qué calificación queieres que aparezcan? ");
         var evaluacion = input.nextDouble();
         input.nextLine();
-        List<Serie> filtroSeries = repository.seriesPorTemporadasYEvaluacion();
+        List<Serie> filtroSeries = repository.seriesPorTemporadasYEvaluacion(totalTemporadas, evaluacion);
         System.out.println("Las series son: ");
         filtroSeries.forEach(s ->
                 System.out.println(s.getTitulo() + "  - evaluacion: " + s.getEvaluacion()));
