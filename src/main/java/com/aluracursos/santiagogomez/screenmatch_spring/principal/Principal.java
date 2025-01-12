@@ -168,8 +168,8 @@ public class Principal {
 
     private void buscarEpisodiosTitulo() {
         System.out.println("Escribe el nombre del episodio que deseas buscar");
-        var nombreEpisodio = input.nextLine();
-        List<Episodio> episodiosEncontrados = repository.episodiosPorNombre(nombreEpisodio);
+        var nombreEpisodios = input.nextLine();
+        List<Episodio> episodiosEncontrados = repository.episodiosPorNombre(nombreEpisodios);
         episodiosEncontrados.forEach(e ->
                 System.out.printf("Serie: %s Temporada %s Episodio %s Evaluación %s\n",
                         e.getSerie().getTitulo(), e.getTemporada(), e.getNumeroEpisodio(), e.getEvaluacion()));
